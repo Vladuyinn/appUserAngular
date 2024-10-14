@@ -1,0 +1,33 @@
+/* Container principal */
+.user-management {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+  /* Logout button styles similar to other buttons */
+  .logout-btn {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .logout-btn:hover {
+    background-color: #357ABD;
+  }
+
+.cat-container img {
+  max-width: 300px;
+  height: auto;
+}

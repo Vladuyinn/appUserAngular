@@ -1,0 +1,30 @@
+<div class="register-container">
+  <h2>Inscription</h2>
+  <form #registerForm="ngForm" (ngSubmit)="onRegister()" novalidate>
+    <div class="form-group">
+      <label for="username">Identifiant</label>
+      <input type="text" id="login" placeholder="Choisir un identifiant" name="username" ngModel required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Entrer votre email" name="email" ngModel required email
+        #emailInput="ngModel">
+      <!-- Display an error message if the email format is incorrect -->
+      <div *ngIf="emailInput.invalid && emailInput.touched">
+        <small class="error-message" *ngIf="emailInput.errors?.['required']">L'email est requis.</small>
+        <small class="error-message" *ngIf="emailInput.errors?.['email']">Veuillez entrer une adresse email valide.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" placeholder="Choisir un mot de passe" name="password" ngModel required>
+    </div>
+
+    <input type="hidden" id="droit" value="0">
+
+    <button type="submit" class="register-btn" [disabled]="registerForm.invalid">S'inscrire</button>
+  </form>
+  <p>Déjà un compte ? <a href="connexion">Connectez-vous</a></p>
+</div>

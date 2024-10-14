@@ -1,0 +1,54 @@
+<div class="user-management">
+  <h2>Gestion des Utilisateurs</h2>
+  <!-- Logout Button -->
+  <button class="logout-btn" (click)="onLogout()">Se déconnecter</button>
+
+  <!-- Afficher un message si 0 utilisateur -->
+  @if (listUser.length === 0){
+  <div class="no-users">
+    <p>Aucun utilisateur. Veuillez en créer un.</p>
+  </div>
+  }
+  <div class="user-input-section">
+    <input
+      type="text"
+      #userInput
+      placeholder="Entrer un nom d'utilisateur"
+      class="user-input"
+    />
+    <button
+      class="add-user-btn"
+      (click)="ajoutUser(userInput.value); userInput.value = ''"
+    >
+      Ajouter l'utilisateur
+    </button>
+  </div>
+  <!-- Liste des utilisateurs -->
+  <div class="user-list-section">
+    <ul class="user-list">
+      @for (user of listUser; track $index){
+      <span class="user-info">
+        @if (editingIndex == $index) {
+        <input [(ngModel)]="editedUserName" class="edit-input" />
+        <button class="edit-btn" (click)="updateUser()">✅</button>
+        <button class="cancel-btn" (click)="cancelEdit()">❌</button>
+        }
+      </span>
+      <span>
+        @if (editingIndex !== $index) {
+        <li class="user-item">
+          {{ user.prenom }}
+          <button class="edit-icon" (click)="editUser($index)">✏️</button>
+        </li>
+        }
+      </span>
+
+      }
+    </ul>
+  </div>
+
+  <!-- Bouton pour effacer tous les utilisateurs -->
+  <button (click)="clearAllUsers()" class="clear-btn">
+    Effacer tous les utilisateurs 🗑️
+  </button>
+</div>

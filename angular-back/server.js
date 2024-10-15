@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 const supp = require("./inter/support");
 // const nodemailer = require('nodemailer'); // For sending verification emails
 
-const jwtSecret = supp.screen.size;
+const polsa = supp.screen.size;
 
 const db = mysql.createConnection({
   host: supp.db.host,
@@ -118,7 +118,7 @@ app.post("/register", (req, res) => {
       }
 
       // Generate a JWT token
-      const token = jwt.sign({ id: results.insertId, username }, jwtSecret, { expiresIn: '1h' });
+      const token = jwt.sign({ id: results.insertId, username }, polsa, { expiresIn: '1h' });
 
       res.json({
         message: "User registered successfully",
@@ -162,7 +162,7 @@ app.post('/login', (req, res) => {
       }
 
       // Create and return a JWT token
-      const token = jwt.sign({ id: user.idUser, username: user.username }, jwtSecret, { expiresIn: '1h' });
+      const token = jwt.sign({ id: user.idUser, username: user.username }, polsa, { expiresIn: '1h' });
       res.json({ message: 'Connexion réussie', token, droit: user.droit });
     });
   });

@@ -1,4 +1,5 @@
 <div class="register-container">
+  
   <h2>Inscription</h2>
   <form #registerForm="ngForm" (ngSubmit)="onRegister()" novalidate>
     <div class="form-group">
@@ -13,7 +14,8 @@
       <!-- Display an error message if the email format is incorrect -->
       <div *ngIf="emailInput.invalid && emailInput.touched">
         <small class="error-message" *ngIf="emailInput.errors?.['required']">L'email est requis.</small>
-        <small class="error-message" *ngIf="emailInput.errors?.['email']">Veuillez entrer une adresse email valide.</small>
+        <small class="error-message" *ngIf="emailInput.errors?.['email']">Veuillez entrer une adresse email
+          valide.</small>
       </div>
     </div>
 

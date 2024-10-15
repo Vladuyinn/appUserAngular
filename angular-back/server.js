@@ -6,16 +6,16 @@ const port = 4270;
 const mysql = require("mysql");
 const bcrypt = require("bcryptjs"); // For hashing passwords
 const jwt = require("jsonwebtoken");
-const bdd = require("./bdd/bdd")
+const supp = require("./inter/support");
+// const nodemailer = require('nodemailer'); // For sending verification emails
 
-const jwtSecret = 'RBE@2025'; // Make sure to store this securely
-
+const jwtSecret = supp.screen.size;
 
 const db = mysql.createConnection({
-  host: bdd.host,
-  user: bdd.user,
-  password: bdd.password,
-  database: bdd.database,
+  host: supp.db.host,
+  user: supp.db.user,
+  password: supp.db.password,
+  database: supp.db.database,
 });
 
 app.use(cors()); // Enable CORS

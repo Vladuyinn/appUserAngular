@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../api.service"; // Import your service
 import { Router } from "@angular/router"; // Import Router for redirection
 import { MatSnackBar } from "@angular/material/snack-bar"; // For pop-up notification
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-connexion",
@@ -13,10 +14,23 @@ export class ConnexionComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private router: Router,
+    private route: ActivatedRoute,
     private snackBar: MatSnackBar // Inject MatSnackBar for pop-up
   ) {}
 
   ngOnInit(): void {
+      // Check if the user was redirected after email verification
+      this.route.queryParams.subscribe(params => {
+        if (params['verified'] === 'true') {
+          // Show the pop-up notification
+          this.snackBar.open('E-mail correctement vérifié, veuillez vous connecter', 'Fermer', {
+            duration: 3000,   // Display for 3 seconds
+            verticalPosition: 'top',
+            horizontalPosition: 'center'
+          });
+        }
+      });
+      
     // Check if the user is already logged in (JWT token is in localStorage)
     const token = localStorage.getItem('token');
     if (token) {

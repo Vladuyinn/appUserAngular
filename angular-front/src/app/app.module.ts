@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { ConnexionComponent } from "./connexion/connexion.component";
 import { ApiService } from './api.service';
 import { ChatComponent } from './chat/chat.component';
+import { VerifEmailComponent } from './verif-email/verif-email.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ChatComponent } from './chat/chat.component';
     LoginComponent,
     HomeComponent,
     ConnexionComponent,
-    ChatComponent
+    ChatComponent,
+    VerifEmailComponent
   ],
   imports: [
     FormsModule,

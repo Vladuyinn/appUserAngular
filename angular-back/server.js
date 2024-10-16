@@ -97,6 +97,7 @@ app.listen(port, () => {
   console.log(`Server running on http://192.168.0.210:${port}`);
 });
 
+// Route d'inscription
 app.post("/register", (req, res) => {
   const { username, email, password } = req.body;
 
@@ -118,7 +119,7 @@ app.post("/register", (req, res) => {
       }
 
       // Generate a JWT token
-      const token = jwt.sign({ id: results.insertId, username }, polsa, { expiresIn: '1h' });
+      const token = jwt.sign({ email: email }, polsa, { expiresIn: '1h' });
 
       sendVerificationEmail(email, username, results.insertId);
 
@@ -130,6 +131,7 @@ app.post("/register", (req, res) => {
   });
 });
 
+// Route de connexion
 app.post('/login', (req, res) => {
   const { identifier, password } = req.body;
 
@@ -174,6 +176,7 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Route de vérification de l'email
 app.get('/verify-email', (req, res) => {
   const token = req.query.token;
 
@@ -184,41 +187,39 @@ app.get('/verify-email', (req, res) => {
   // Vérifier le token JWT
   jwt.verify(token, polsa, (err, decoded) => {
     if (err) {
-      console.error('Erreur lors de la vérification du token:', err);
-      return res.status(400).send('Lien de vérification expiré ou invalide.');
+      if (err.name === 'TokenExpiredError') {
+        // Renvoyer une réponse spécifique pour un lien expiré
+        return res.status(400).json({ error: 'Lien expiré' });
+      } else {
+        return res.status(400).json({ error: 'Lien invalide ou expiré.' });
+      }
     }
 
-    const userEmail = decoded.email;  // On récupère l'email du token
-    console.log('Email décodé du token:', userEmail);  // Debugging
+    const userEmail = decoded.email;
 
-    // Mettre à jour la colonne "verifié" pour cet utilisateur dans la base de données
+    // Si le token est valide, mettre à jour l'email comme vérifié dans la base de données
     const query = "UPDATE admin SET verifié = 1 WHERE email = ?";
-    
     db.query(query, [userEmail], (error, results) => {
       if (error) {
-        console.error('Erreur lors de la mise à jour du statut utilisateur dans la base de données:', error);
-        return res.status(500).send('Erreur lors de la mise à jour du statut utilisateur.');
+        console.error('Erreur lors de la mise à jour du statut utilisateur:', error);
+        return res.status(500).send('Erreur lors de la mise à jour.');
       }
 
-      console.log('Résultats de la mise à jour SQL:', results);  // Debugging
-
       if (results.affectedRows === 0) {
-        console.log('Aucune ligne affectée, utilisateur non trouvé ou déjà vérifié.');
         return res.status(404).send('Utilisateur non trouvé ou déjà vérifié.');
       }
 
-      // Rediriger vers la page de connexion avec un message de succès
-      res.redirect('/connexion?verified=true');
+      res.status(200).json({ message: 'Email vérifié avec succès.' });
     });
   });
 });
 
 
+
 // Fonction pour envoyer l'email de vérification
 function sendVerificationEmail(userEmail, username, userId) {
-
   // Générer un token de vérification (valide pendant 1 heure)
-  const token = jwt.sign({ email: userEmail }, polsa, { expiresIn: '1h' });
+  const token = jwt.sign({ email: userEmail }, polsa, { expiresIn: '30s' });
 
   // Créer un objet de transport avec les informations de configuration de NodeMailer
   const transporter = nodemailer.createTransport({
@@ -226,7 +227,7 @@ function sendVerificationEmail(userEmail, username, userId) {
     port: 465,               // Port pour SSL
     secure: true,            // Utiliser SSL
     auth: {
-      user: supp.mail.address,  // Votre adresse email (ex: 'votre-email@gmail.com')
+      user: supp.mail.address,  // Votre adresse email
       pass: supp.mail.pass      // Le mot de passe ou app-specific password si 2FA activé
     }
   });

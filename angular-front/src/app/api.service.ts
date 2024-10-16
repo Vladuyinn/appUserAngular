@@ -8,7 +8,7 @@ import { Observable } from "rxjs";
 export class ApiService {
   private apiUrl = "http://192.168.0.210:4270";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Fonction pour récupérer les utilisateurs
   getUser(): Observable<any> {
@@ -36,5 +36,10 @@ export class ApiService {
 
   loginUser(loginData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, loginData);
+  }
+
+  // Méthode pour appeler l'API de vérification d'email
+  verifyEmail(token: string, options?: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/verify-email?token=${token}`, options);
   }
 }

@@ -16,6 +16,7 @@ import { ConnexionComponent } from "./connexion/connexion.component";
 import { ApiService } from './api.service';
 import { ChatComponent } from './chat/chat.component';
 import { VerifEmailComponent } from './verif-email/verif-email.component';
+import { ErreurLienExpireComponent } from './erreur-lien-expire/erreur-lien-expire.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { VerifEmailComponent } from './verif-email/verif-email.component';
     HomeComponent,
     ConnexionComponent,
     ChatComponent,
-    VerifEmailComponent
+    VerifEmailComponent,
+    ErreurLienExpireComponent
   ],
   imports: [
     FormsModule,
